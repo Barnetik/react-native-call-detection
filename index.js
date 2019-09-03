@@ -26,6 +26,10 @@ const requestPermissionsAndroid = async (permissionMessage) => {
         )
 }
 
+export const CALL_STATE_IDLE = 0;
+export const CALL_STATE_RINGING = 1;
+export const CALL_STATE_OFFHOOK = 2;
+
 class CallDetectorManager {
 
     subscription;
@@ -64,6 +68,14 @@ class CallDetectorManager {
       if(this.subscription) {
           this.subscription.removeAllListeners('PhoneCallStateUpdate');
           this.subscription = undefined
+      }
+    }
+
+    static getCallState() {
+      if (Platform.OS === 'ios') {
+        throw 'Not implemented';
+      } else {
+        return NativeCallDetectorAndroid.getCallState();
       }
     }
 }

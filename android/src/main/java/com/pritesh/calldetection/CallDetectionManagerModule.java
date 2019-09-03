@@ -11,6 +11,7 @@ import android.util.Log;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.Promise;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +52,11 @@ public class CallDetectionManagerModule
         telephonyManager.listen(callDetectionPhoneStateListener,
                 PhoneStateListener.LISTEN_CALL_STATE);
 
+    }
+
+    @ReactMethod
+    public void getCallState(Promise promise) {
+      promise.resolve(telephonyManager.getCallState());
     }
 
     @ReactMethod
