@@ -7,6 +7,7 @@ import {
   Platform,
   PermissionsAndroid
 } from 'react-native'
+
 export const permissionDenied = 'PERMISSION DENIED'
 
 const BatchedBridge = require('react-native/Libraries/BatchedBridge/BatchedBridge')
@@ -79,4 +80,5 @@ class CallDetectorManager {
       }
     }
 }
-export default module.exports = CallDetectorManager;
+
+export default CallDetectorManager;
