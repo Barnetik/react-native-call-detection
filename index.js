@@ -19,12 +19,13 @@ var CallStateUpdateActionModule = require('./CallStateUpdateActionModule')
 BatchedBridge.registerCallableModule('CallStateUpdateActionModule', CallStateUpdateActionModule)
 
 const requestPermissionsAndroid = async (permissionMessage) => {
-      await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE)
-      .then(async (gotPermission) => gotPermission
-          ? true
-          : await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE, permissionMessage)
-              .then((result) => result === PermissionsAndroid.RESULTS.GRANTED)
-        )
+      let gotPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE)
+      if (gotPermission) {
+        return true;
+      } else {
+        gotPermission = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE, permissionMessage);
+        return gotPermission === PermissionsAndroid.RESULTS.GRANTED;
+      }
 }
 
 export const CALL_STATE_IDLE = 0;
