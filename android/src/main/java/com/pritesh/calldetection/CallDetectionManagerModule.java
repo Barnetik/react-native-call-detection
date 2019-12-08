@@ -56,7 +56,7 @@ public class CallDetectionManagerModule
 
     @ReactMethod
     public void getCallState(Promise promise) {
-      promise.resolve(telephonyManager.getCallState());
+        promise.resolve(telephonyManager.getCallState());
     }
 
     @ReactMethod
@@ -64,6 +64,12 @@ public class CallDetectionManagerModule
         telephonyManager.listen(callDetectionPhoneStateListener,
                 PhoneStateListener.LISTEN_NONE);
         callDetectionPhoneStateListener = null;
+    }
+
+
+    @ReactMethod
+    public void isListening(Promise promise) {
+        promise.resolve(callDetectionPhoneStateListener != null);
     }
 
     /**

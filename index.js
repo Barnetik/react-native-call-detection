@@ -36,31 +36,32 @@ class CallDetectorManager {
 
     subscription;
     callback
-    constructor(callback, readPhoneNumberAndroid = false, permissionDeniedCallback = ()=>{}, permissionMessage = {
+
+    startListener(callback, readPhoneNumberAndroid = false, permissionDeniedCallback = () => {}, permissionMessage = {
       title: 'Phone State Permission',
       message: 'This app needs access to your phone state in order to react and/or to adapt to incoming calls.'
     }) {
-        this.callback = callback
-        if (Platform.OS === 'ios') {
-            NativeCallDetector && NativeCallDetector.startListener()
-            this.subscription = new NativeEventEmitter(NativeCallDetector)
-            this.subscription.addListener('PhoneCallStateUpdate', callback);
-        }
-        else {
-            if(NativeCallDetectorAndroid) {
-              if(readPhoneNumberAndroid) {
-                requestPermissionsAndroid(permissionMessage)
-                  .then((permissionGranted) => {
-                    if (!permissionGranted) {
-                      permissionDeniedCallback(permissionDenied)
-                    }
-                  })
-                  .catch(permissionDeniedCallback)
-              }
-              NativeCallDetectorAndroid.startListener();
+      this.callback = callback
+      if (Platform.OS === 'ios') {
+          NativeCallDetector && NativeCallDetector.startListener()
+          this.subscription = new NativeEventEmitter(NativeCallDetector)
+          this.subscription.addListener('PhoneCallStateUpdate', callback);
+      }
+      else {
+          if(NativeCallDetectorAndroid) {
+            if(readPhoneNumberAndroid) {
+              requestPermissionsAndroid(permissionMessage)
+                .then((permissionGranted) => {
+                  if (!permissionGranted) {
+                    permissionDeniedCallback(permissionDenied)
+                  }
+                })
+                .catch(permissionDeniedCallback)
             }
-            CallStateUpdateActionModule.callback = callback
-        }
+            NativeCallDetectorAndroid.startListener();
+          }
+          CallStateUpdateActionModule.callback = callback
+      }
     }
 
     dispose() {
@@ -78,6 +79,14 @@ class CallDetectorManager {
         throw 'Not implemented';
       } else {
         return NativeCallDetectorAndroid.getCallState();
+      }
+    }
+
+    static isListening() {
+      if (Platform.OS === 'ios') {
+        throw 'Not implemented';
+      } else {
+        return NativeCallDetectorAndroid.isListening();
       }
     }
 }
