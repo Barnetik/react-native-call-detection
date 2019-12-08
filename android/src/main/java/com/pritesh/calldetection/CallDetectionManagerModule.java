@@ -32,6 +32,8 @@ public class CallDetectionManagerModule
     public CallDetectionManagerModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
+        telephonyManager = (TelephonyManager) this.reactContext.getSystemService(
+                Context.TELEPHONY_SERVICE);
     }
 
     @Override
@@ -46,8 +48,6 @@ public class CallDetectionManagerModule
             activity.getApplication().registerActivityLifecycleCallbacks(this);
         }
 
-        telephonyManager = (TelephonyManager) this.reactContext.getSystemService(
-                Context.TELEPHONY_SERVICE);
         callDetectionPhoneStateListener = new CallDetectionPhoneStateListener(this);
         telephonyManager.listen(callDetectionPhoneStateListener,
                 PhoneStateListener.LISTEN_CALL_STATE);
